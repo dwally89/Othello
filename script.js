@@ -295,6 +295,8 @@ function createBoard() {
 
     const board = document.createElement('table');
     board.style.backgroundColor = 'green';
+    board.style.width = '90vw';
+    board.style.height = '90vw';
     const tbody = board.createTBody();
     for (let rowIndex = 0; rowIndex < Game.getNumberOfRows(); rowIndex++) {
         const row = document.createElement('tr');
