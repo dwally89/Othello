@@ -1,14 +1,15 @@
 const Game = (function () {
     const numberOfRows = 8;
     const numberOfColumns = 8;
-    let board = [];
-    const white = 'w';
-    const black = 'b';
+    const white = 'White';
+    const black = 'Black';
     const unset = '_';
-    let currentTurn = black;
-    let isComputerGame = false;
     const human = 'h';
     const computer = 'c';
+    let board = [];
+    let currentPlayer = human;
+    let currentTurn = black;
+    let isComputerGame = false;
     function changeNeighbours(
         startRow, startCol, targetColour,
         rowTransform, colTransform, dryRun) {
@@ -114,8 +115,8 @@ const Game = (function () {
         for (let i = 0; i < moves.length; i++) {
             const rowIndex = moves[i][0];
             const colIndex = moves[i][1];
-            if ((rowIndex == 0 || rowIndex == numberOfRows) &&
-                (colIndex == 0 || colIndex == numberOfColumns)) {
+            if ((rowIndex == 0 || rowIndex == (numberOfRows-1)) &&
+                (colIndex == 0 || colIndex == (numberOfColumns-1))) {
                 return moves[i];
             }
         }
@@ -124,9 +125,9 @@ const Game = (function () {
         for (let i = 0; i < moves.length; i++) {
             const rowIndex = moves[i][0];
             const colIndex = moves[i][1];
-            if (((rowIndex == 0 || rowIndex == numberOfRows) &&
+            if (((rowIndex == 0 || rowIndex == (numberOfRows-1)) &&
                 (colIndex == 2 || colIndex == 5)) ||
-                ((colIndex == 0 || colIndex == numberOfColumns) &&
+                ((colIndex == 0 || colIndex == (numberOfColumns-1)) &&
                     (rowIndex == 2 || rowIndex == 5))) {
                 return moves[i];
             }
@@ -195,6 +196,9 @@ const Game = (function () {
         getCurrentTurn: function () {
             return currentTurn;
         },
+        getCurrentPlayer: function() {
+            return currentPlayer;
+        },
         white: function () {
             return white;
         },
@@ -203,6 +207,12 @@ const Game = (function () {
         },
         unset: function () {
             return unset;
+        },
+        computer: function() {
+            return computer;
+        },
+        human: function() {
+            return human;
         },
         getNumberOfRows: function () {
             return numberOfRows;
@@ -246,12 +256,14 @@ function drawBoard() {
             switch (Game.getColour(rowIndex, colIndex)) {
                 case Game.white():
                     cell.style.backgroundColor = 'white';
-                    cell.innerHTML = '';
+                    cell.style.color = 'white';
+                    cell.innerHTML = '_';
                     cell.onclick = null;
                     break;
                 case Game.black():
                     cell.style.backgroundColor = 'black';
-                    cell.innerHTML = '';
+                    cell.style.color = 'black';
+                    cell.innerHTML = '_';
                     cell.onclick = null;
                     break;
                 case Game.unset():
@@ -264,6 +276,20 @@ function drawBoard() {
     }
 }
 
+function doComputerMove() {
+    if (!Game.isComputerGame()) {
+        throw new Error(`Can't do computer move if game isn't computer game`);
+    }
+
+    if (Game.getCurrentPlayer() == Game.computer()) {
+        setTimeout(() => {
+            Game.doComputerMove();
+            drawBoard();
+            doComputerMove();
+        }, 750);
+    }
+}
+
 function move(rowIndex, colIndex) {
     if (!Game.isCellUnset(rowIndex, colIndex)) {
         throw new Error('Cell is already in use');
@@ -273,10 +299,7 @@ function move(rowIndex, colIndex) {
     drawBoard();
 
     if (Game.isComputerGame()) {
-        setTimeout(() => {
-            Game.doComputerMove();
-            drawBoard();
-        }, 500);
+        doComputerMove();
     }
 }
 
