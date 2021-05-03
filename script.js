@@ -143,6 +143,23 @@ const Game = (function () {
             }
         }
 
+        // Try danger zone if corner piece is already taken
+        for (let i = 0; i < moves.length; i++) {
+            const rowIndex = moves[i][0];
+            const colIndex = moves[i][1];
+            if (rowIndex < 2) {
+                if ((colIndex < 2 && board[0][0] != unset) ||
+                    (colIndex > 5 && board[0][numberOfColumns-1] != unset)) {
+                    return moves[i];
+                }
+            } else if (rowIndex > 5) {
+                if ((colIndex < 2 && board[numberOfRows-1][0] != unset) ||
+                    (colIndex > 5 && board[numberOfRows-1][numberOfColumns-1] != unset)) {
+                    return moves[i];
+                }
+            }
+        }
+
         // Use any move
         return moves[0];
     }
