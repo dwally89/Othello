@@ -305,8 +305,6 @@ function createBoard() {
             const cell = document.createElement('td');
             cell.id = 'cell_' + rowIndex + '_' + colIndex;
             cell.style.textAlign = 'center';
-            cell.style.width = '50px';
-            cell.style.height = '50px';
             cell.style.borderRadius = '50%';
             row.appendChild(cell);
         }
