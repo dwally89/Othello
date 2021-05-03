@@ -311,6 +311,7 @@ function drawBoard() {
                     break;
                 case Game.unset():
                     cell.style.backgroundColor = '';
+                    cell.style.color = 'black';
                     cell.innerHTML = '_';
                     cell.onclick = () => move(rowIndex, colIndex);
                     break;
@@ -368,11 +369,15 @@ function createBoard() {
         const row = document.createElement('tr');
         row.id = 'row_' + rowIndex;
         for (let colIndex = 0; colIndex < Game.getNumberOfColumns(); colIndex++) {
-            const cell = document.createElement('td');
+            const cellContainer = document.createElement('td');
+            const cell = document.createElement('div');
+            cellContainer.appendChild(cell);
             cell.id = 'cell_' + rowIndex + '_' + colIndex;
             cell.style.textAlign = 'center';
             cell.style.borderRadius = '50%';
-            row.appendChild(cell);
+            cell.style.height = '95%';
+            cell.style.width = '95%';
+            row.appendChild(cellContainer);
         }
 
         tbody.appendChild(row);
