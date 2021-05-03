@@ -172,6 +172,30 @@ const Game = (function () {
         return getBestMove();
     }
 
+    function isGameOver() {
+        // Check if all pieces are the same colour or there are no unset cells
+        let hasBlack = false;
+        let hasWhite = false;
+        let hasUnset = false;
+        for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex++) {
+            for (let colIndex = 0; colIndex < numberOfColumns; colIndex++) {
+                if (board[rowIndex][colIndex] == black) {
+                    hasBlack == true;
+                } else if (board[rowIndex][colIndex] == white) {
+                    hasWhite == true;
+                } else if (board[rowIndex][colIndex] == unset) {
+                    hasUnset = true;
+                }
+
+                if (hasWhite && hasBlack && hasUnset) {
+                    return false;
+                }
+            }
+        }
+
+        return !hasUnset || !(hasBlack && hasWhite);
+    }
+
     function move(rowIndex, colIndex) {
         if (board[rowIndex][colIndex] != unset) {
             throw new Error('Cell is already in use');
@@ -184,6 +208,8 @@ const Game = (function () {
             if (canMove(nextTurn)) {
                 currentTurn = nextTurn;
                 currentPlayer = nextPlayer;
+            } else if (isGameOver()) {
+                alert('Game over!');
             } else {
                 alert(nextTurn + ' has no possible moves, back to ' + currentTurn);
             }
