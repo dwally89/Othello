@@ -127,9 +127,9 @@ const Game = (function() {
             const rowIndex = moves[i][0];
             const colIndex = moves[i][1];
             if (((rowIndex == 0 || rowIndex == (numberOfRows - 1)) &&
-                    (colIndex == 2 || colIndex == 5)) ||
+                    (colIndex == 2 || colIndex == (numberOfColumns - 3))) ||
                 ((colIndex == 0 || colIndex == (numberOfColumns - 1)) &&
-                    (rowIndex == 2 || rowIndex == 5))) {
+                    (rowIndex == 2 || rowIndex == (numberOfRows - 3)))) {
                 return moves[i];
             }
         }
@@ -150,12 +150,12 @@ const Game = (function() {
             const colIndex = moves[i][1];
             if (rowIndex < 2) {
                 if ((colIndex < 2 && board[0][0] != unset) ||
-                    (colIndex > 5 && board[0][numberOfColumns - 1] != unset)) {
+                    (colIndex > (numberOfColumns - 3) && board[0][numberOfColumns - 1] != unset)) {
                     return moves[i];
                 }
-            } else if (rowIndex > 5) {
+            } else if (rowIndex > (numberOfRows - 3)) {
                 if ((colIndex < 2 && board[numberOfRows - 1][0] != unset) ||
-                    (colIndex > 5 && board[numberOfRows - 1][numberOfColumns - 1] != unset)) {
+                    (colIndex > (numberOfColumns - 3) && board[numberOfRows - 1][numberOfColumns - 1] != unset)) {
                     return moves[i];
                 }
             }
